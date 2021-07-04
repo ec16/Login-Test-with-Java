@@ -1,0 +1,98 @@
+package testcases;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import pages.LoginPageObject;
+
+//Declare a class
+public class LoginPageTest {
+    WebDriver driver;
+
+
+    @BeforeClass
+    public void Setup() {
+        System.setProperty("webdriver.chrome.driver", "/d:/chromedriver90/chromedriver.exe");
+        //creating a new Chrome webDriver, Open Chrome
+        driver = new ChromeDriver();
+        //bring the new browser to focus
+        ((JavascriptExecutor) driver).executeScript("alert('Test')");
+        driver.switchTo().alert().accept();
+        driver.manage().window().maximize();
+        //navigate to the login site
+        driver.get("https://practicetestautomation.com/practice-test-login/");
+        
+        }
+
+    @Test
+    public void test1UnsuccessfullLogin(){
+        //create an instance of login page object class and pass the driver to it
+        LoginPageObject login = new LoginPageObject(driver);
+        //Call the methods from the LoginPage class
+        login.typeBadElementUsername();
+        login.typeBadElementPassword();
+        login.clickOnSubmitButton();
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.className("show")));
+
+        //find error message element
+
+        WebElement elementErrorMessage = driver.findElement(By.className("show"));
+
+            String errorMessage = elementErrorMessage.getText();
+//run condition
+        if (errorMessage.equals("Your username is invalid!")) {
+
+            System.out.println("Test 1 Unsuccessful login passed");
+        } else {
+            System.out.println("Test 1 Unsuccessful login failed");
+        }
+
+    }
+    @Test
+    public void test2SuccessfulLogin(){
+//Call the methods from the LoginPage class
+        LoginPageObject login = new LoginPageObject(driver);
+        login.typeGoodElementUsername();
+        login.typeGoodElementPassword();
+        login.clickOnSubmitButton1();
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("title")));
+
+        //find success message element
+        String title = driver.getTitle();
+
+//run condition
+                if (title.equals("Logged In Successfully | Practice Test Automation")) {
+
+            System.out.println("Test2 passed Successful login passed");
+
+        } else {
+            System.out.println("Test2 failed Successful login failed");
+            System.out.print(title);
+        }
+    }
+    @Test
+    public void test3Logout(){
+        LoginPageObject login = new LoginPageObject(driver);
+        login.clickOnLogoutButton();
+        //find logout button element
+        WebElement elementLogout = driver.findElement(By.tagName("h2"));
+            String logoutMessage = elementLogout.getText();
+            //run condition
+        if (logoutMessage.equals("Test login")) {
+            System.out.println("Test3 Successful logout passed");
+        } else {
+            System.out.println("Test3 failed Successful logout failed test failed");
+        }
+        }
+
+    @AfterClass
+    public void tearDown() {
+//Close browser
+        driver.quit();
+    }
+}
