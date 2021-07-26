@@ -1,26 +1,24 @@
-package pages;
-        import org.openqa.selenium.By;
-        import org.openqa.selenium.WebDriver;
-        import org.openqa.selenium.WebElement;
-        import testcases.LoginPageTest;
-        
-//Declare a class
-public class LoginPageObject extends LoginPageTest {
+package PageObject;
+import TestCases.PracticeTestAutomationTestCases;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+public class PracticeTestAutomationPageObject extends PracticeTestAutomationTestCases {
     public WebDriver driver;
 
     //Driver is instantiated in the constructor
-    public LoginPageObject(WebDriver driver) {
+    public PracticeTestAutomationPageObject(WebDriver driver) {
         this.driver = driver;
     }
 
     //Methods - typeBadElementUsername(), typeBadElementPassword(), clickOnSubmitButton(), errorMessage()
-    // find Badusername field and type Badvalue in username field
+    // find Bad username field and type Bad value in username field
     public void typeBadElementUsername() {
         WebElement elementBadUsername = driver.findElement(By.id("username"));
         elementBadUsername.sendKeys("bad");
     }
 
-    //find Badpassword field and type Badvalue in password field
+    //find Bad password field and type Bad value in password field
     public void typeBadElementPassword() {
         WebElement elementBadPassword = driver.findElement(By.id("password"));
         elementBadPassword.sendKeys("Bad");
@@ -31,9 +29,9 @@ public class LoginPageObject extends LoginPageTest {
         WebElement elementSubmit = driver.findElement(By.id("submit"));
         elementSubmit.click();
     }
-    
-    //Methods - typeGoodElementUsername(), typeGoodElementPassword(), clickOnSubmitButton(), sucessMessage()
-    // find Goodusername field and type Goodvalue in username field
+
+    //Methods - typeGoodElementUsername(), typeGoodElementPassword(), clickOnSubmitButton(), successMessage()
+    // find Good username field and type Good value in username field
     public void typeGoodElementUsername() {
         WebElement elementUsername = driver.findElement(By.id("username"));
         elementUsername.sendKeys("student");
@@ -48,14 +46,15 @@ public class LoginPageObject extends LoginPageTest {
     //find submit button and click on submit button
     public void clickOnSubmitButton1() {
         WebElement elementSubmit1 = driver.findElement(By.id("submit"));
+        //WebElement elementSubmit1 = driver.findElement(By.xpath("/html/body/div/div/section/div/div/article/div[2]/div/div/div/a"));
         elementSubmit1.click();
     }
 
-    
+
     //Methods - find logout button, clickLogout()
     public void clickOnLogoutButton() {
         WebElement elementLogout = driver.findElement(By.linkText("Log out"));
         elementLogout.click();
     }
-    
+
 }
