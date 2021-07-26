@@ -1,21 +1,24 @@
-package testcases;
-import org.openqa.selenium.*;
+package TestCases;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import pages.LoginPageObject;
+import PageObject.PracticeTestAutomationPageObject;
 
-//Declare a class
-public class LoginPageTest {
+public class PracticeTestAutomationTestCases {
     WebDriver driver;
 
 
     @BeforeClass
     public void Setup() {
-        System.setProperty("webdriver.chrome.driver", "/d:/chromedriver90/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "/d:/chromedriver91/chromedriver.exe");
         //creating a new Chrome webDriver, Open Chrome
         driver = new ChromeDriver();
         //bring the new browser to focus
@@ -24,16 +27,35 @@ public class LoginPageTest {
         driver.manage().window().maximize();
         //navigate to the login site
         driver.get("https://practicetestautomation.com/practice-test-login/");
-        
-        }
 
+    }
     @Test
-    public void test1UnsuccessfullLogin(){
+    public void securityTestingforURLTest1() {
+        String currentURL = driver.getCurrentUrl();
+        if (currentURL.contains("https")) {
+            System.out.println("Test 1 Security Testing of URL passed");
+
+        } else {
+            System.out.println("Test 1 Security Testing of URL failed");
+        }
+    }
+    @Test
+    public void test2UnsuccessfullLogin(){
         //create an instance of login page object class and pass the driver to it
-        LoginPageObject login = new LoginPageObject(driver);
+        PracticeTestAutomationPageObject login = new PracticeTestAutomationPageObject(driver);
         //Call the methods from the LoginPage class
         login.typeBadElementUsername();
         login.typeBadElementPassword();
+        //Check if password is masked Continue from here
+        WebElement password1 = driver.findElement(By.xpath("//*[@name='password']"));
+        String pass = password1.getAttribute("type");
+        if (pass.equals("password")){System.out.println("Test 2 Verify that password is masked - passed");
+
+        }
+        else {
+            System.out.println("Test 2 Verify that password is masked - failed");
+            System.out.println(pass);
+        }
         login.clickOnSubmitButton();
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.className("show")));
@@ -42,20 +64,20 @@ public class LoginPageTest {
 
         WebElement elementErrorMessage = driver.findElement(By.className("show"));
 
-            String errorMessage = elementErrorMessage.getText();
+        String errorMessage = elementErrorMessage.getText();
 //run condition
         if (errorMessage.equals("Your username is invalid!")) {
 
-            System.out.println("Test 1 Unsuccessful login passed");
+            System.out.println("Test 3 Unsuccessful login passed");
         } else {
-            System.out.println("Test 1 Unsuccessful login failed");
+            System.out.println("Test 3 Unsuccessful login failed");
         }
 
     }
     @Test
-    public void test2SuccessfulLogin(){
+    public void test3SuccessfulLogin(){
 //Call the methods from the LoginPage class
-        LoginPageObject login = new LoginPageObject(driver);
+        PracticeTestAutomationPageObject login = new PracticeTestAutomationPageObject(driver);
         login.typeGoodElementUsername();
         login.typeGoodElementPassword();
         login.clickOnSubmitButton1();
@@ -66,33 +88,34 @@ public class LoginPageTest {
         String title = driver.getTitle();
 
 //run condition
-                if (title.equals("Logged In Successfully | Practice Test Automation")) {
+        if (title.equals("Logged In Successfully | Practice Test Automation")) {
 
-            System.out.println("Test2 passed Successful login passed");
+            System.out.println("Test4 passed Successful login passed");
 
         } else {
-            System.out.println("Test2 failed Successful login failed");
+            System.out.println("Test4 failed Successful login failed");
             System.out.print(title);
         }
     }
     @Test
-    public void test3Logout(){
-        LoginPageObject login = new LoginPageObject(driver);
+    public void test4Logout(){
+        PracticeTestAutomationPageObject login = new PracticeTestAutomationPageObject(driver);
         login.clickOnLogoutButton();
         //find logout button element
         WebElement elementLogout = driver.findElement(By.tagName("h2"));
-            String logoutMessage = elementLogout.getText();
-            //run condition
+        String logoutMessage = elementLogout.getText();
+        //run condition
         if (logoutMessage.equals("Test login")) {
-            System.out.println("Test3 Successful logout passed");
+            System.out.println("Test5 Successful logout passed");
         } else {
-            System.out.println("Test3 failed Successful logout failed test failed");
+            System.out.println("Test5 failed Successful logout failed test failed");
         }
-        }
+    }
 
     @AfterClass
     public void tearDown() {
 //Close browser
         driver.quit();
     }
+
 }
