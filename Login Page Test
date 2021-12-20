@@ -18,7 +18,7 @@ public class PracticeTestAutomationTestCases {
 
     @BeforeClass
     public void Setup() {
-        System.setProperty("webdriver.chrome.driver", "/d:/chromedriver91/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "/");
         //creating a new Chrome webDriver, Open Chrome
         driver = new ChromeDriver();
         //bring the new browser to focus
